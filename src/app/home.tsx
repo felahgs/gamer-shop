@@ -12,7 +12,8 @@ import Button from "@/components/Button";
 
 import { Game } from "@/types/game";
 import { useGetGames } from "@/hooks/useGetGames";
-import Loader from "@/components/Loader";
+import { useLocalStorage } from "usehooks-ts";
+import { GamesResponse } from "@/services/games";
 
 export default function HomeView() {
   const router = useRouter();
@@ -21,25 +22,39 @@ export default function HomeView() {
 
   const [games, setGames] = useState<Game[]>([]);
   const [selectedGenre, setSelectedGenre] = useState(genre);
-
   const { data, error, loading, fetch } = useGetGames({ genre: genre });
-  const { currentPage = 0, totalPages = 0 } = data || {};
 
+  const { currentPage = 0, totalPages = 0 } = data || {};
   const showSeeMore = currentPage < totalPages;
+
+  const [cartStorage, setCartStorage] = useLocalStorage<Game[]>("cart", []);
+
+  const gameIsOnCart = (id: string) =>
+    !!cartStorage.find((item) => id === item.id);
 
   const handleGenreChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedGenre = e.target.value;
     setSelectedGenre(selectedGenre);
     const response = await fetch({ page: 1, genre: selectedGenre });
-    const { games: fetchedGames } = response || { games: [] };
+    const { games: fetchedGames } = response as GamesResponse;
     setGames(fetchedGames);
     router.push(selectedGenre ? `?genre=${selectedGenre}` : "/");
   };
 
   const handleSeeMore = async () => {
     const response = await fetch({ page: currentPage + 1, genre: genre });
-    const { games: fetchedGames } = response || { games: [] };
+    const { games: fetchedGames } = response as GamesResponse;
     setGames([...games, ...fetchedGames]);
+  };
+
+  const handleCart = (game: Game) => () => {
+    if (gameIsOnCart(game.id)) {
+      setCartStorage(
+        cartStorage.filter((gameOnCart) => gameOnCart.id !== game.id),
+      );
+    } else {
+      setCartStorage([...cartStorage, game]);
+    }
   };
 
   useEffect(() => {
@@ -95,6 +110,18 @@ export default function HomeView() {
                   genre={game.genre}
                   price={game.price}
                   isNew={game.isNew}
+                  actions={
+                    <Button
+                      className="mt-5"
+                      fluid
+                      variant="secondary"
+                      onClick={handleCart(game)}
+                    >
+                      {gameIsOnCart(game.id)
+                        ? "REMOVE FROM CART"
+                        : "ADD TO CART"}
+                    </Button>
+                  }
                 />
               ))}
             </div>
@@ -107,11 +134,6 @@ export default function HomeView() {
                 We couldn&apos;t find any games matching your selection. Try
                 selecting another filet.
               </p>
-              <div className="text-center">
-                <Button className="px-8 py-3 bg-primary text-white">
-                  Go Back to Top Sellers
-                </Button>
-              </div>
             </div>
           )}
           {showSeeMore && (
