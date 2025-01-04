@@ -5,11 +5,14 @@ import ProductCard from "./ProductCard";
 import userEvent from "@testing-library/user-event";
 
 describe("ProductCard", () => {
+  const mockedOnAddItem = jest.fn();
+
   const mockedProps = {
     genre: "Action",
     title: "Product Title",
     price: 50,
     img: <img src="#" alt="image" />,
+    actions: <button onClick={mockedOnAddItem}>ADD TO CART</button>,
   };
 
   it("should render properly with all product information", () => {
@@ -28,10 +31,8 @@ describe("ProductCard", () => {
     expect(screen.getByText("New")).toBeInTheDocument();
   });
 
-  it("should call the onAddItem method when clicking the button", async () => {
-    const mockedOnAddItem = jest.fn();
-
-    render(<ProductCard {...mockedProps} onAddItem={mockedOnAddItem} />);
+  it("should call the onAddItem from the actions", async () => {
+    render(<ProductCard {...mockedProps} />);
 
     const button = screen.getByRole("button", {
       name: "ADD TO CART",

@@ -20,5 +20,6 @@ export const Default: Story = {
     price: 119,
     img: <Image src={gameImage} alt="image" />,
     isNew: true,
+    actions: <button>ADD TO CART</button>,
   },
 };

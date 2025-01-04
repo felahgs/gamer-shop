@@ -7,7 +7,7 @@ export interface ProductCardProps {
   price: number;
   img: ReactNode;
   isNew?: boolean;
-  onAddItem?: () => void;
+  actions: ReactNode;
 }
 
 function ProductCard({
@@ -16,7 +16,7 @@ function ProductCard({
   price,
   img,
   isNew,
-  onAddItem,
+  actions,
 }: ProductCardProps) {
   return (
     <div className="flex flex-col justify-between gap-5 max-w-[380px] p-6 border border-neutral-400 rounded-2xl">
@@ -34,9 +34,7 @@ function ProductCard({
           <span className="text-lg">{title}</span>
           <span className="text-xl">${price}</span>
         </div>
-        <Button className="mt-5" fluid variant="secondary" onClick={onAddItem}>
-          ADD TO CART
-        </Button>
+        {actions}
       </div>
     </div>
   );
