@@ -15,7 +15,7 @@ import { useGetGames } from "@/hooks/useGetGames";
 import { useLocalStorage } from "usehooks-ts";
 import { GamesResponse } from "@/services/games";
 
-export default function HomeView() {
+export default function CatalogView() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const genre = searchParams.get("genre") ?? "";

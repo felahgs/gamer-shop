@@ -1,5 +1,5 @@
-import HomeView from "./home";
+import CatalogView from "./catalog";
 
-export default async function Home() {
-  return <HomeView />;
+export default async function Catalog() {
+  return <CatalogView />;
 }

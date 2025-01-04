@@ -1,9 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { useRouter } from "next/navigation";
 import { useGetGames } from "@/hooks/useGetGames";
 import { useLocalStorage } from "usehooks-ts";
 import userEvent from "@testing-library/user-event";
-import HomeView from "../home";
+import CatalogView from "../catalog";
 
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
@@ -23,7 +24,7 @@ jest.mock("usehooks-ts", () => ({
   useLocalStorage: jest.fn(),
 }));
 
-describe("HomeView Component", () => {
+describe("CatalogView Component", () => {
   let mockPush: jest.Mock;
   const mockedGames = [
     {
@@ -81,7 +82,7 @@ describe("HomeView Component", () => {
   });
 
   it("should render the header and games list", async () => {
-    render(<HomeView />);
+    render(<CatalogView />);
 
     expect(screen.getByText("Top Sellers")).toBeInTheDocument();
     expect(screen.getByText("Genre")).toBeInTheDocument();
@@ -97,7 +98,7 @@ describe("HomeView Component", () => {
       fetch: jest.fn(),
     });
 
-    render(<HomeView />);
+    render(<CatalogView />);
 
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -113,7 +114,7 @@ describe("HomeView Component", () => {
       data: { ...defaultResponse.data, games: mockedGames.slice(1, 2) },
     });
 
-    render(<HomeView />);
+    render(<CatalogView />);
 
     const seeMoreButton = screen.getByText("SEE MORE");
     expect(seeMoreButton).toBeInTheDocument();
@@ -136,7 +137,7 @@ describe("HomeView Component", () => {
       data: { ...defaultResponse.data, games: mockedGames.slice(1, 2) },
     });
 
-    render(<HomeView />);
+    render(<CatalogView />);
 
     const selectElement = screen.getByRole("combobox");
     fireEvent.change(selectElement, { target: { value: "Adventure" } });
@@ -161,7 +162,7 @@ describe("HomeView Component", () => {
       data: { ...defaultResponse.data, games: mockedGames.slice(1, 2) },
     });
 
-    render(<HomeView />);
+    render(<CatalogView />);
 
     const selectElement = screen.getByRole("combobox");
     fireEvent.change(selectElement, { target: { value: "" } });
@@ -188,13 +189,13 @@ describe("HomeView Component", () => {
       fetch: jest.fn(),
     });
 
-    render(<HomeView />);
+    render(<CatalogView />);
 
     expect(screen.getByText("Oops! No Games Found")).toBeInTheDocument();
   });
 
   it("should add a game to the cart", async () => {
-    render(<HomeView />);
+    render(<CatalogView />);
 
     const addToCartButton = screen.getAllByText("ADD TO CART")[0];
 
@@ -211,7 +212,7 @@ describe("HomeView Component", () => {
       setCartStorage,
     ]);
 
-    render(<HomeView />);
+    render(<CatalogView />);
 
     const removeFromCartButton = screen.getAllByText("REMOVE FROM CART")[0];
 
