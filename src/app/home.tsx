@@ -12,11 +12,7 @@ import Button from "@/components/Button";
 
 import { Game } from "@/types/game";
 import { useGetGames } from "@/hooks/useGetGames";
-
-interface HomeViewProps {
-  games: Game[];
-  filters: string[];
-}
+import Loader from "@/components/Loader";
 
 export default function HomeView() {
   const router = useRouter();

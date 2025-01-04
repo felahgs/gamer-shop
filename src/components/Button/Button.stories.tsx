@@ -30,3 +30,17 @@ export const Text: Story = {
   },
   render: (args) => <Button {...args}>Button</Button>,
 };
+
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+  },
+  render: (args) => <Button {...args}>Button</Button>,
+};
+
+export const Loading: Story = {
+  args: {
+    loading: true,
+  },
+  render: (args) => <Button {...args}>Button</Button>,
+};
