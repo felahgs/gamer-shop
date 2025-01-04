@@ -43,4 +43,20 @@ describe("Button", () => {
 
     expect(button).toHaveClass("w-full");
   });
+
+  it("should render the button in a loading state and disabled", async () => {
+    const mockedOnClick = jest.fn();
+    render(
+      <Button loading onClick={mockedOnClick}>
+        Button
+      </Button>,
+    );
+
+    const button = screen.getByRole("button");
+    const loader = screen.getByRole("status");
+    await userEvent.click(button);
+
+    expect(mockedOnClick).not.toHaveBeenCalled();
+    expect(loader).toBeInTheDocument();
+  });
 });
