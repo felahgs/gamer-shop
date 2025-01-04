@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo } from "next/font/google";
+import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -45,10 +46,16 @@ export default function RootLayout({
     </Link>
   );
 
+  const CartIcon = (
+    <Link title="cart" href="/cart">
+      <ShoppingCartIcon className="h-6 w-6 text-icon-active" />
+    </Link>
+  );
+
   return (
     <html lang="en">
       <body className={archivo.className}>
-        <Header logo={HeaderLogo} />
+        <Header logo={HeaderLogo} navItems={[CartIcon]} />
         {children}
         <Footer>{FooterLogo}</Footer>
       </body>

@@ -8,6 +8,7 @@ export interface CartItemProps {
   description: string;
   price: number;
   img: ReactNode;
+  className?: string;
   onRemove?: () => void;
 }
 function CartItem({
@@ -16,10 +17,11 @@ function CartItem({
   price,
   img,
   description,
+  className,
   onRemove,
 }: CartItemProps) {
   return (
-    <div className="flex xsm:h-48 px-4 py-5 max-w-2xl gap-2">
+    <div className={`flex xsm:h-48  gap-2 ${className}`}>
       <div className="flex flex-col sm:flex-row gap-6">
         <div className="w-64 h-40 flex-shrink-0 flex items-center justify-center overflow-hidden">
           {img}

@@ -11,11 +11,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        neutral: {
+          dark: colors.neutral[700],
+        },
         stroke: {
           secondary: colors.neutral[700],
+          tertiary: colors.gray[100],
         },
         icon: {
           primary: colors.neutral[400],
+          active: colors.zinc[600],
         },
       },
       textColor: {

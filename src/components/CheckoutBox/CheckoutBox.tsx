@@ -1,17 +1,19 @@
 import { Game } from "@/types/game";
-import React from "react";
+import React, { HTMLAttributes } from "react";
 
-export interface CheckoutBoxProps {
+export interface CheckoutBoxProps extends HTMLAttributes<HTMLDivElement> {
   products?: Game[];
 }
 
-function CheckoutBox({ products = [] }: CheckoutBoxProps) {
+function CheckoutBox({ products = [], className, ...rest }: CheckoutBoxProps) {
   const total = products.reduce((acc, cur) => acc + cur.price, 0);
 
   const itemCount = products.length;
 
   return (
-    <div className="flex flex-col p-8 border border-neutral-300 rounded-lg text-primary gap-8">
+    <div
+      className={`flex flex-col  p-8 border border-neutral-300 rounded-lg text-primary gap-8 ${className}`}
+    >
       <div className="flex flex-col gap-2">
         <span className="font-bold text-2xl">Order Summary</span>
         <span>
@@ -23,7 +25,10 @@ function CheckoutBox({ products = [] }: CheckoutBoxProps) {
         <div className="pb-6">
           {products.map((product) => {
             return (
-              <div className="flex justify-between w-full" key={product.id}>
+              <div
+                className="flex gap-1 justify-between w-full py-1"
+                key={product.id}
+              >
                 <span>{product.name}</span>
                 <span>${product.price}</span>
               </div>

@@ -64,7 +64,7 @@ export default function CatalogView() {
   }, [data, error, games.length]);
 
   return (
-    <main className="flex flex-col items-center min-h-[calc(100vh-240px)] divide-y divide-stroke-secondary">
+    <main className="flex flex-col items-center min-h-[calc(100vh-240px)] divide-y divide-stroke-tertiary">
       <header className="flex flex-col items-center w-full py-8 px-6 sm:px-12">
         <div className="max-w-screen-xl w-full">
           <h1 className="font-bold text-4xl pb-9 text-primary">Top Sellers</h1>
