@@ -6,8 +6,8 @@ import userEvent from "@testing-library/user-event";
 import { useGetGames } from "@/hooks/useGetGames";
 
 import Page from "../page";
-import CatalogView from "../catalog";
 import { mockedGames } from "../../utils/mocks";
+import { useNotification } from "@/hooks";
 
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
@@ -22,8 +22,13 @@ jest.mock("usehooks-ts", () => ({
   useLocalStorage: jest.fn(),
 }));
 
+jest.mock("@/hooks/useNotification", () => ({
+  useNotification: jest.fn(),
+}));
+
 describe("CatalogView Component", () => {
-  let mockPush: jest.Mock;
+  const mockPush: jest.Mock = jest.fn();
+  const mockNotify: jest.Mock = jest.fn();
 
   const defaultResponse = {
     data: {
@@ -44,13 +49,15 @@ describe("CatalogView Component", () => {
   };
 
   beforeEach(() => {
-    mockPush = jest.fn();
+    mockPush.mockClear();
+    mockNotify.mockClear();
     (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
     (useGetGames as jest.Mock).mockReturnValue(defaultResponse);
     (useLocalStorage as jest.Mock).mockReturnValue([
       mockLocalStorage.cart,
       setCartStorage,
     ]);
+    (useNotification as jest.Mock).mockReturnValue({ notify: mockNotify });
   });
 
   it("should render the header and games list", async () => {
@@ -192,6 +199,55 @@ describe("CatalogView Component", () => {
 
     await waitFor(() => {
       expect(setCartStorage).toHaveBeenCalled();
+    });
+  });
+
+  it("should show an error notification when changing genre fails", async () => {
+    const mockFetch = jest.fn(() => {
+      throw new Error("Failed to fetch new games");
+    });
+
+    (useGetGames as jest.Mock).mockReturnValue({
+      ...defaultResponse,
+      fetch: mockFetch,
+    });
+
+    render(await Page());
+
+    const selectElement = screen.getByRole("combobox");
+    fireEvent.change(selectElement, { target: { value: "Adventure" } });
+
+    await waitFor(() => {
+      expect(mockNotify).toHaveBeenCalledWith({
+        type: "error",
+        message: "Failed to fetch new games",
+        title: "Error",
+      });
+    });
+  });
+
+  it("should show an error notification when 'See More' fails", async () => {
+    // Simulate a fetch failure when clicking "See More"
+    const mockFetch = jest.fn(() => {
+      throw new Error("Failed to load more games");
+    });
+
+    (useGetGames as jest.Mock).mockReturnValue({
+      ...defaultResponse,
+      fetch: mockFetch,
+    });
+
+    render(await Page());
+
+    const seeMoreButton = screen.getByText("SEE MORE");
+    userEvent.click(seeMoreButton);
+
+    await waitFor(() => {
+      expect(mockNotify).toHaveBeenCalledWith({
+        type: "error",
+        message: "Failed to load more games",
+        title: "Error",
+      });
     });
   });
 });

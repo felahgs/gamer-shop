@@ -4,16 +4,27 @@ import { useLocalStorage } from "usehooks-ts";
 
 import Page from "../cart/page";
 import { mockedGames } from "@/utils/mocks";
+import { useNotification } from "@/hooks";
 
 jest.mock("usehooks-ts", () => ({
   useLocalStorage: jest.fn(),
 }));
 
+jest.mock("@/hooks", () => ({
+  useNotification: jest.fn(),
+}));
+
 describe("CartView", () => {
   const mockSetCartStorage = jest.fn();
+  const mockClearCartStorage = jest.fn();
+  const mockNotify = jest.fn();
 
   beforeEach(() => {
     mockSetCartStorage.mockClear();
+    mockClearCartStorage.mockClear();
+    mockNotify.mockClear();
+
+    (useNotification as jest.Mock).mockReturnValue({ notify: mockNotify });
   });
 
   it("should display an empty cart message when cart is empty", async () => {
@@ -72,5 +83,27 @@ describe("CartView", () => {
 
     const checkoutButton = screen.getByRole("button", { name: "Checkout" });
     expect(checkoutButton).toBeDisabled();
+  });
+
+  it("should call notify with a success message when the checkout button is clicked", async () => {
+    (useLocalStorage as jest.Mock).mockReturnValue([
+      mockedGames,
+      mockSetCartStorage,
+      mockClearCartStorage,
+    ]);
+
+    render(await Page());
+
+    const checkoutButton = screen.getByRole("button", { name: "Checkout" });
+
+    await userEvent.click(checkoutButton);
+
+    expect(mockNotify).toHaveBeenCalledWith({
+      type: "success",
+      message: "Checkout successful.",
+      title: "Checkout",
+    });
+
+    expect(mockClearCartStorage).toHaveBeenCalled();
   });
 });

@@ -1,9 +1,7 @@
-import { renderHook, act } from "@testing-library/react"; // Import from '@testing-library/react'
+import { renderHook, act } from "@testing-library/react";
 import { useGetGames } from "@/hooks/useGetGames";
-import { getGamesAction } from "@/hooks/actions";
 import { GamesResponse, getGames } from "@/services/games";
 
-// Mocking the getGamesAction function
 jest.mock("@/services/games", () => ({
   getGames: jest.fn(),
 }));

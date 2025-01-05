@@ -42,6 +42,7 @@ export default function CatalogView() {
       setGames(fetchedGames);
       router.push(selectedGenre ? `?genre=${selectedGenre}` : "/");
     } catch (err) {
+      console.log("ERROR");
       notify({
         type: "error",
         message: "Failed to fetch new games",

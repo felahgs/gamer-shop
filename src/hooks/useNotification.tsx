@@ -1,11 +1,5 @@
-import { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import Notification, { NotificationProps } from "@/components/Notification";
-
-interface UseNotificationProps extends NotificationProps {
-  timer?: number;
-  defaultProps: NotificationProps;
-}
 
 export function useNotification(defaultProps?: NotificationProps) {
   const notify = ({ timer = 5000, onClose, ...rest }: NotificationProps) => {
@@ -40,8 +34,8 @@ export function useNotification(defaultProps?: NotificationProps) {
       <Notification
         {...defaultProps}
         {...rest}
-        onClose={handleClose}
         timer={timer - 1000}
+        onClose={handleClose}
       />,
     );
   };
