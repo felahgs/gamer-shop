@@ -10,6 +10,7 @@ export interface CartItemProps {
   price: number;
   img: ReactNode;
   className?: string;
+  isNew?: boolean;
   onRemove?: () => void;
 }
 function CartItem({
@@ -17,16 +18,22 @@ function CartItem({
   title,
   price,
   img,
+  isNew,
   description,
   className,
   onRemove,
 }: CartItemProps) {
   return (
     <div className={`flex xsm:h-48  gap-2 ${className}`}>
-      <div className="flex flex-col sm:flex-row gap-6">
+      <div className="flex flex-col sm:flex-row gap-6 relative">
         <div className="w-64 h-40 flex-shrink-0 flex items-center justify-center overflow-hidden">
           {img}
         </div>
+        {isNew && (
+          <div className="absolute rounded-md m-3 px-3 py-1 border border-neutral-200 bg-white top-0 left-0">
+            New
+          </div>
+        )}
         <div className="flex flex-col gap-1">
           <span className="uppercase font-bold text-neutral-500">{genre}</span>
           <span className="font-bold">{title}</span>

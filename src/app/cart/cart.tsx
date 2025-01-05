@@ -85,6 +85,7 @@ export default function CartView() {
                     genre={game.genre}
                     description={game.description}
                     price={game.price}
+                    isNew={game.isNew}
                     img={
                       <Image
                         alt={game.name}
