@@ -15,7 +15,7 @@ function CheckoutBox({ products = [], className, ...rest }: CheckoutBoxProps) {
       className={`flex flex-col  p-8 border border-neutral-300 rounded-lg text-primary gap-8 ${className}`}
     >
       <div className="flex flex-col gap-2">
-        <span className="font-bold text-2xl">Order Summary</span>
+        <h2 className="font-bold text-2xl">Order Summary</h2>
         <span>
           {itemCount} {itemCount > 1 ? "items" : "item"}
         </span>

@@ -15,7 +15,7 @@ const config: Config = {
           dark: colors.neutral[700],
         },
         stroke: {
-          secondary: colors.neutral[700],
+          secondary: colors.neutral[400],
           tertiary: colors.gray[100],
         },
         icon: {

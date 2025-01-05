@@ -40,6 +40,7 @@ export default function CartView() {
           </div>
           <div className="flex flex-col justify-center items-center lg:items-stretch lg:flex-row lg:justify-between gap-12">
             <div className="flex flex-col justify-between divide-y divide-stroke-secondary">
+              <h2 className="sr-only">Cart Items</h2>
               {cartStorage.length === 0 ? (
                 <div className="text-center text-neutral-dark font-semibold text-lg py-5">
                   Your cart is empty. Add some games to the cart to proceed!
@@ -58,6 +59,7 @@ export default function CartView() {
                         <Image
                           alt={name}
                           src={image}
+                          title={name}
                           width={256}
                           height={156}
                         />
