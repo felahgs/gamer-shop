@@ -10,7 +10,7 @@ body {
 
 #notification-container {
   position: fixed;
-  top: 20px;
+  top: 60px;
   right: 0px;
   z-index: 9999;
   display: flex;
