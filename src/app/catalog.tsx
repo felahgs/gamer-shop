@@ -11,13 +11,14 @@ import Select from "@/components/Select/Select";
 import Button from "@/components/Button";
 
 import { Game } from "@/utils/endpoint";
-import { useGetGames } from "@/hooks/useGetGames";
+import { useGetGames, useNotification } from "@/hooks";
 import { useLocalStorage } from "usehooks-ts";
 import { GamesResponse } from "@/services/games";
 
 export default function CatalogView() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { notify } = useNotification();
   const genre = searchParams.get("genre") ?? "";
 
   const [games, setGames] = useState<Game[]>([]);
@@ -35,16 +36,32 @@ export default function CatalogView() {
   const handleGenreChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedGenre = e.target.value;
     setSelectedGenre(selectedGenre);
-    const response = await fetch({ page: 1, genre: selectedGenre });
-    const { games: fetchedGames } = response as GamesResponse;
-    setGames(fetchedGames);
-    router.push(selectedGenre ? `?genre=${selectedGenre}` : "/");
+    try {
+      const response = await fetch({ page: 1, genre: selectedGenre });
+      const { games: fetchedGames } = response as GamesResponse;
+      setGames(fetchedGames);
+      router.push(selectedGenre ? `?genre=${selectedGenre}` : "/");
+    } catch (err) {
+      notify({
+        type: "error",
+        message: "Failed to fetch new games",
+        title: "Error",
+      });
+    }
   };
 
   const handleSeeMore = async () => {
-    const response = await fetch({ page: currentPage + 1, genre: genre });
-    const { games: fetchedGames } = response as GamesResponse;
-    setGames([...games, ...fetchedGames]);
+    try {
+      const response = await fetch({ page: currentPage + 1, genre: genre });
+      const { games: fetchedGames } = response as GamesResponse;
+      setGames([...games, ...fetchedGames]);
+    } catch (err) {
+      notify({
+        type: "error",
+        message: "Failed to load more games",
+        title: "Error",
+      });
+    }
   };
 
   const handleCart = (game: Game) => () => {
@@ -52,8 +69,19 @@ export default function CatalogView() {
       setCartStorage(
         cartStorage.filter((gameOnCart) => gameOnCart.id !== game.id),
       );
+
+      notify({
+        type: "info",
+        message: `Removed ${game.name} from cart`,
+        title: "Game Removed",
+      });
     } else {
       setCartStorage([...cartStorage, game]);
+      notify({
+        type: "info",
+        message: `Added ${game.name} to cart`,
+        title: "Game Added",
+      });
     }
   };
 

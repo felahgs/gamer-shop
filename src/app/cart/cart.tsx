@@ -10,18 +10,38 @@ import CheckoutBox from "@/components/CheckoutBox";
 import Button from "@/components/Button";
 import { useState, useEffect } from "react";
 import Loading from "../loading";
+import { useNotification } from "@/hooks";
 
 export default function CartView() {
   const [isClient, setIsClient] = useState(false);
+  const { notify } = useNotification();
 
-  const [cartStorage, setCartStorage] = useLocalStorage<Game[]>("cart", []);
+  const [cartStorage, setCartStorage, clearCartStorage] = useLocalStorage<
+    Game[]
+  >("cart", []);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  const onRemove = (id: string) => () => {
-    setCartStorage(cartStorage.filter((gameOnCart) => gameOnCart.id !== id));
+  const handleRemove = (game: Game) => () => {
+    notify({
+      type: "info",
+      message: `Removed ${game.name} from cart`,
+      title: "Game Removed",
+    });
+    setCartStorage(
+      cartStorage.filter((gameOnCart) => gameOnCart.id !== game.id),
+    );
+  };
+
+  const handleCheckout = () => {
+    clearCartStorage();
+    notify({
+      type: "success",
+      message: "Checkout successful.",
+      title: "Checkout",
+    });
   };
 
   if (!isClient) {
@@ -57,36 +77,38 @@ export default function CartView() {
                   Your cart is empty. Add some games to the cart to proceed!
                 </div>
               ) : (
-                cartStorage.map(
-                  ({ id, name, price, image, description, genre }) => (
-                    <CartItem
-                      className="py-5 max-w-full lg:max-w-2xl"
-                      title={name}
-                      key={id}
-                      genre={genre}
-                      description={description}
-                      price={price}
-                      img={
-                        <Image
-                          alt={name}
-                          src={image}
-                          title={name}
-                          width="0"
-                          height="0"
-                          sizes="100vw"
-                          className="w-full h-auto"
-                          priority
-                        />
-                      }
-                      onRemove={onRemove(id)}
-                    />
-                  ),
-                )
+                cartStorage.map((game) => (
+                  <CartItem
+                    className="py-5 max-w-full lg:max-w-2xl"
+                    title={game.name}
+                    key={game.id}
+                    genre={game.genre}
+                    description={game.description}
+                    price={game.price}
+                    img={
+                      <Image
+                        alt={game.name}
+                        src={game.image}
+                        title={game.name}
+                        width="0"
+                        height="0"
+                        sizes="100vw"
+                        className="w-full h-auto"
+                        priority
+                      />
+                    }
+                    onRemove={handleRemove(game)}
+                  />
+                ))
               )}
             </div>
             <div className="flex flex-col gap-10 grow lg:max-w-lg w-full">
               <CheckoutBox className="w-full" products={cartStorage} />
-              <Button disabled={cartStorage.length === 0} fluid>
+              <Button
+                onClick={handleCheckout}
+                disabled={cartStorage.length === 0}
+                fluid
+              >
                 Checkout
               </Button>
             </div>

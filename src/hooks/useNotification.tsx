@@ -1,19 +1,49 @@
 import { useState, useEffect } from "react";
-import ReactDOM from "react-dom/client"; // For React 18 and newer
+import ReactDOM from "react-dom/client";
 import Notification, { NotificationProps } from "@/components/Notification";
 
-export function useNotification() {
-  const notify = ({ type, message, title }: NotificationProps) => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
+interface UseNotificationProps extends NotificationProps {
+  timer?: number;
+  defaultProps: NotificationProps;
+}
 
-    const root = ReactDOM.createRoot(container);
-    root.render(<Notification {...{ type, message, title }} />);
+export function useNotification(defaultProps?: NotificationProps) {
+  const notify = ({ timer = 5000, onClose, ...rest }: NotificationProps) => {
+    let container = document.getElementById("notification-container");
+    if (!container) {
+      container = document.createElement("div");
+      container.id = "notification-container";
+      document.body.appendChild(container);
+    }
 
-    setTimeout(() => {
+    const notificationDiv = document.createElement("div");
+    container.appendChild(notificationDiv);
+
+    const timeoutId = setTimeout(() => {
       root.unmount();
-      document.body.removeChild(container);
-    }, 5000);
+      container.removeChild(notificationDiv);
+    }, timer);
+
+    const handleClose = () => {
+      clearTimeout(timeoutId);
+
+      setTimeout(() => {
+        root.unmount();
+        container.removeChild(notificationDiv);
+      }, 500);
+
+      onClose ? onClose() : defaultProps?.onClose ? defaultProps.onClose : null;
+    };
+
+    const root = ReactDOM.createRoot(notificationDiv);
+    root.render(
+      <Notification
+        {...defaultProps}
+        {...rest}
+        onClose={handleClose}
+        timer={timer - 1000}
+      />,
+    );
   };
 
   return { notify };
