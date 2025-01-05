@@ -19,7 +19,7 @@ describe("CartItem", () => {
     expect(screen.getByRole("img")).toBeInTheDocument();
     expect(screen.getByText("Action")).toBeInTheDocument();
     expect(screen.getByText("Product Title")).toBeInTheDocument();
-    expect(screen.getByText("$50")).toBeInTheDocument();
+    expect(screen.getByText("$50.00")).toBeInTheDocument();
     expect(
       screen.getByText(
         "Phasellus ut pellentesque felis. Nam non diam venenatis.",

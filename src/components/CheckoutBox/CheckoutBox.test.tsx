@@ -47,7 +47,7 @@ describe("CheckoutBox", () => {
   it("should render properly with no products", () => {
     render(<CheckoutBox />);
 
-    const orderTotal = screen.getByText("$0");
+    const orderTotal = screen.getByText("$0.00");
     expect(orderTotal).toBeInTheDocument();
   });
 });
