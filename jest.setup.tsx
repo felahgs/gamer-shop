@@ -5,7 +5,7 @@ jest.mock("next/image", () => {
   return {
     __esModule: true,
     default: (props: React.ImgHTMLAttributes<HTMLImageElement>) => {
-      return <img alt="mocked image" {...props} />;
+      return <img alt="mocked image" src={props.src} />;
     },
   };
 });

@@ -9,8 +9,10 @@ const config: Config = {
   coverageProvider: "babel",
   coverageReporters: ["json", "lcov", "clover", "text", "text-summary"],
   testEnvironment: "jsdom",
-  setupFilesAfterEnv: ["./jest.setup.tsx"],
-
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.tsx"],
+  transform: {
+    "^.+\\.(ts|tsx)$": "ts-jest",
+  },
   clearMocks: true,
   collectCoverage: true,
   collectCoverageFrom: ["./src/**"],

@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { useRouter } from "next/navigation";
 import { useLocalStorage } from "usehooks-ts";
@@ -13,11 +12,6 @@ import { mockedGames } from "../../utils/mocks";
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
   useSearchParams: jest.fn(() => new URLSearchParams()),
-}));
-
-jest.mock("next/image", () => ({
-  __esModule: true,
-  default: (props: any) => <img alt="mock image" {...props} />,
 }));
 
 jest.mock("@/hooks/useGetGames", () => ({

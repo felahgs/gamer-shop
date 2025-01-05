@@ -2,20 +2,31 @@
 
 import { useLocalStorage } from "usehooks-ts";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
-
 import { Game } from "@/utils/endpoint";
 import Link from "next/link";
 import CartItem from "@/components/CartItem";
 import Image from "next/image";
 import CheckoutBox from "@/components/CheckoutBox";
 import Button from "@/components/Button";
+import { useState, useEffect } from "react";
+import Loading from "../loading";
 
 export default function CartView() {
+  const [isClient, setIsClient] = useState(false);
+
   const [cartStorage, setCartStorage] = useLocalStorage<Game[]>("cart", []);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const onRemove = (id: string) => () => {
     setCartStorage(cartStorage.filter((gameOnCart) => gameOnCart.id !== id));
   };
+
+  if (!isClient) {
+    return <Loading />;
+  }
 
   return (
     <main className="flex flex-col items-center min-h-[calc(100vh-240px)] pb-8">
@@ -40,7 +51,7 @@ export default function CartView() {
           </div>
           <div className="flex flex-col justify-center items-center lg:items-stretch lg:flex-row lg:justify-between gap-12">
             <div className="flex flex-col justify-between divide-y divide-stroke-secondary">
-              <h2 className="sr-only">Cart Items</h2>
+              <span className="sr-only">Cart Items</span>
               {cartStorage.length === 0 ? (
                 <div className="text-center text-neutral-dark font-semibold text-lg py-5">
                   Your cart is empty. Add some games to the cart to proceed!
@@ -59,11 +70,11 @@ export default function CartView() {
                         <Image
                           alt={name}
                           src={image}
+                          title={name}
                           width="0"
                           height="0"
                           sizes="100vw"
                           className="w-full h-auto"
-                          title={name}
                           priority
                         />
                       }
