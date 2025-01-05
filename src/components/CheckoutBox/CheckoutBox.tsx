@@ -1,4 +1,5 @@
 import { Game } from "@/utils/endpoint";
+import { usdCurrency } from "@/utils/format";
 import React, { HTMLAttributes } from "react";
 
 export interface CheckoutBoxProps extends HTMLAttributes<HTMLDivElement> {
@@ -30,14 +31,14 @@ function CheckoutBox({ products = [], className, ...rest }: CheckoutBoxProps) {
                 key={product.id}
               >
                 <span>{product.name}</span>
-                <span>${product.price}</span>
+                <span>{usdCurrency.format(product.price)}</span>
               </div>
             );
           })}
         </div>
         <div className="flex justify-between w-full text-xl font-bold pt-6">
           <span>Order Total</span>
-          <span>${total}</span>
+          <span>{usdCurrency.format(total)}</span>
         </div>
       </div>
     </div>

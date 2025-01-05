@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import Button from "@/components/Button";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import { usdCurrency } from "@/utils/format";
 
 export interface CartItemProps {
   genre: string;
@@ -33,7 +34,9 @@ function CartItem({
             {description}
           </span>
         </div>
-        <span className="self-end font-bold text-xl">${price}</span>
+        <span className="self-end font-bold text-xl">
+          {usdCurrency.format(price)}
+        </span>
       </div>
       <Button
         className="self-start text-neutral-400"

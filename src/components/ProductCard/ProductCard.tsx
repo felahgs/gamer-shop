@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import Button from "@/components/Button";
+import { usdCurrency } from "@/utils/format";
 
 export interface ProductCardProps {
   genre: string;
@@ -32,7 +32,7 @@ function ProductCard({
         <span className="uppercase text-neutral-500">{genre}</span>
         <div className="flex justify-between">
           <span className="text-lg">{title}</span>
-          <span className="text-xl">${price}</span>
+          <span className="text-xl">{usdCurrency.format(price)}</span>
         </div>
         {actions}
       </div>
