@@ -1,11 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { useRouter } from "next/navigation";
-import { useGetGames } from "@/hooks/useGetGames";
 import { useLocalStorage } from "usehooks-ts";
 import userEvent from "@testing-library/user-event";
 
+import { useGetGames } from "@/hooks/useGetGames";
+
+import Page from "../page";
 import CatalogView from "../catalog";
+import { mockedGames } from "../../utils/mocks";
 
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
@@ -27,32 +30,6 @@ jest.mock("usehooks-ts", () => ({
 
 describe("CatalogView Component", () => {
   let mockPush: jest.Mock;
-  const mockedGames = [
-    {
-      id: "1",
-      name: "Game 1",
-      genre: "Action",
-      price: "$10",
-      isNew: true,
-      image: "game1.jpg",
-    },
-    {
-      id: "2",
-      name: "Game 2",
-      genre: "Adventure",
-      price: "$10",
-      isNew: true,
-      image: "game1.jpg",
-    },
-    {
-      id: "3",
-      name: "Game 3",
-      genre: "RPG",
-      price: "$20",
-      isNew: true,
-      image: "game3.jpg",
-    },
-  ];
 
   const defaultResponse = {
     data: {
@@ -83,7 +60,7 @@ describe("CatalogView Component", () => {
   });
 
   it("should render the header and games list", async () => {
-    render(<CatalogView />);
+    render(await Page());
 
     expect(screen.getByText("Top Sellers")).toBeInTheDocument();
     expect(screen.getByText("Genre")).toBeInTheDocument();
@@ -99,7 +76,7 @@ describe("CatalogView Component", () => {
       fetch: jest.fn(),
     });
 
-    render(<CatalogView />);
+    render(await Page());
 
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -115,7 +92,7 @@ describe("CatalogView Component", () => {
       data: { ...defaultResponse.data, games: mockedGames.slice(1, 2) },
     });
 
-    render(<CatalogView />);
+    render(await Page());
 
     const seeMoreButton = screen.getByText("SEE MORE");
     expect(seeMoreButton).toBeInTheDocument();
@@ -138,7 +115,7 @@ describe("CatalogView Component", () => {
       data: { ...defaultResponse.data, games: mockedGames.slice(1, 2) },
     });
 
-    render(<CatalogView />);
+    render(await Page());
 
     const selectElement = screen.getByRole("combobox");
     fireEvent.change(selectElement, { target: { value: "Adventure" } });
@@ -163,7 +140,7 @@ describe("CatalogView Component", () => {
       data: { ...defaultResponse.data, games: mockedGames.slice(1, 2) },
     });
 
-    render(<CatalogView />);
+    render(await Page());
 
     const selectElement = screen.getByRole("combobox");
     fireEvent.change(selectElement, { target: { value: "" } });
@@ -190,13 +167,13 @@ describe("CatalogView Component", () => {
       fetch: jest.fn(),
     });
 
-    render(<CatalogView />);
+    render(await Page());
 
     expect(screen.getByText("Oops! No Games Found")).toBeInTheDocument();
   });
 
   it("should add a game to the cart", async () => {
-    render(<CatalogView />);
+    render(await Page());
 
     const addToCartButton = screen.getAllByText("ADD TO CART")[0];
 
@@ -213,7 +190,7 @@ describe("CatalogView Component", () => {
       setCartStorage,
     ]);
 
-    render(<CatalogView />);
+    render(await Page());
 
     const removeFromCartButton = screen.getAllByText("REMOVE FROM CART")[0];
 
