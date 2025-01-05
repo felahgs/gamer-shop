@@ -1,5 +1,5 @@
 import apiClient from "@/services/api";
-import { Game } from "@/types/game";
+import { Game } from "@/utils/endpoint";
 
 export interface GamesQueryParams {
   genre?: string;

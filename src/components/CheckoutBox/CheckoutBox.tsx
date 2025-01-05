@@ -1,4 +1,4 @@
-import { Game } from "@/types/game";
+import { Game } from "@/utils/endpoint";
 import React, { HTMLAttributes } from "react";
 
 export interface CheckoutBoxProps extends HTMLAttributes<HTMLDivElement> {

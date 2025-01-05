@@ -10,7 +10,7 @@ import ProductCard from "@/components/ProductCard";
 import Select from "@/components/Select/Select";
 import Button from "@/components/Button";
 
-import { Game } from "@/types/game";
+import { Game } from "@/utils/endpoint";
 import { useGetGames } from "@/hooks/useGetGames";
 import { useLocalStorage } from "usehooks-ts";
 import { GamesResponse } from "@/services/games";
