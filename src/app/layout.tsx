@@ -25,8 +25,10 @@ export default function RootLayout({
   const HeaderLogo = (
     <Link href="/">
       <Image
-        width={150}
-        height={24}
+        width="0"
+        height="0"
+        sizes="100vw"
+        className="w-full h-auto"
         alt="gamer shop"
         src={"gamer-shop.svg"}
         title="Gamer shop logo"
@@ -37,8 +39,10 @@ export default function RootLayout({
   const FooterLogo = (
     <Link href="/">
       <Image
-        width={170}
-        height={44}
+        width="0"
+        height="0"
+        sizes="100vw"
+        className="w-full h-auto"
         alt="apply digital"
         src={"apply-digital.svg"}
         title="apply digital logo"

@@ -59,9 +59,12 @@ export default function CartView() {
                         <Image
                           alt={name}
                           src={image}
+                          width="0"
+                          height="0"
+                          sizes="100vw"
+                          className="w-full h-auto"
                           title={name}
-                          width={256}
-                          height={156}
+                          priority
                         />
                       }
                       onRemove={onRemove(id)}

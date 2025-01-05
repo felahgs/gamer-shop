@@ -102,8 +102,11 @@ export default function CatalogView() {
                       src={game.image}
                       alt={game.name}
                       title={game.name}
-                      width={332}
-                      height={240}
+                      width="0"
+                      height="0"
+                      sizes="100vw"
+                      className="w-full h-auto"
+                      priority
                     />
                   }
                   title={game.name}
