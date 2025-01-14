@@ -10,7 +10,7 @@
 
 </p>
 <h1 align="center">
-  Gamer Shop Challenge
+  Gamer Shop
 </h1>
 
 <p align="center">
@@ -25,9 +25,7 @@
 
 ## 💻 About
 
-**Front-end Challenge from [Apply Digital](https://github.com/felahgs/ad-frontend-test/tree/main)**  
-
-The goal of this challenge was to implement an responsive application page using NextJS and Tailwind. The application consists in a game shop page, that allows the user to filter and add games to a shopcard. 
+The goal of this project was to implement an responsive application page using NextJS and Tailwind. The application consists in a game shop page, that allows the user to filter and add games to a shopcard. 
 The application has an checkout page where all the cart itens are listed and can be removed.
 
 The development was done using [React](https://react.dev/), [NextJS](https://nextjs.org/docs), [TypeScript](https://www.typescriptlang.org/) and [TawilwindJS](https://tailwindcss.com/).
