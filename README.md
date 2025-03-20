@@ -2,7 +2,7 @@
 
   <img alt="Repository size" src="https://img.shields.io/github/repo-size/felahgs/gamer-shop">
 
-  <a href="https://github.com/tgmarinho/README-ecoleta/commits/master">
+  <a href="https://github.com/felahgs/gamer-shop/commits/main">
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/felahgs/gamer-shop">
   </a>
     
